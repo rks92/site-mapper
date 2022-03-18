@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { msleep } from 'sleep';
 
 class SiteNode {
   constructor(url: string, parent: SiteNode = null) { this.url = url; }
@@ -20,8 +19,7 @@ urlStack.push(new SiteNode(process.argv[2]));
 async function visit(site: SiteNode) {
   // Make request
   // Add to promises list
-  awaitingPromises.push(
-    axios
+  return await axios
       .get(site.url)
       .then(res => {
         // Populate the site node values
@@ -38,17 +36,17 @@ async function visit(site: SiteNode) {
 
         console.log(links);
         // console.log(res);
-      })
-    );
+      });
 }
 
-while(urlStack.length !== 0) {
-  visit(urlStack.pop());
-  msleep(500);
+async function visitSite(baseUrl) {
+  while(urlStack.length !== 0) {
+    await visit(urlStack.pop());
+  }
 }
 
-Promise.allSettled(awaitingPromises).then((settledPromises) => {
-  // Build graph in d3
-  console.log(settledPromises)
-});
+visitSite(process.argv[2]);
+
+
+
 
