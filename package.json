@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "axios": "^0.26.1",
+    "sleep": "^6.3.0",
     "ts-node": "^10.7.0"
   },
   "devDependencies": {
